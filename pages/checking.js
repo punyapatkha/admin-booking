@@ -51,7 +51,9 @@ export default function Checking() {
         if (Valuephone!=='' && Valuephone!==undefined){
             setLoading(true)
             // set loading state to true
-            const res = await axios.post('https://booking-flask-punyapatkha.vercel.app/check',body);
+            
+            const res = await axios.post(process.env.NEXT_PUBLIC_API_URL+'check',body);
+            // const res = await axios.post('https://booking-flask-punyapatkha.vercel.app/check',body);
             // const res = await axios.post('http://127.0.0.1:8000/check',body);
             // if not error 
 

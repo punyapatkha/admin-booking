@@ -39,8 +39,11 @@ export const authOptions = {
         //   password: '321'
         // };
         // const res = await fetch("http://127.0.0.1:8000/token", {
-          
-        const res = await fetch("http://localhost:8000/token2", {
+          // process.env.API_URL
+        const res = await fetch(
+          process.env.NEXT_PUBLIC_API_URL+"token2"
+          // "http://localhost:8000/token2"
+          , {
           method: 'POST',
           // body: datatata,
           // body: JSON.stringify(credentials),

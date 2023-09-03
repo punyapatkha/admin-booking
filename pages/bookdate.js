@@ -88,7 +88,8 @@ export default function Home() {
   const [dayoff2, setdayoff2] = useState();
   const [alldayoff, setalldayoff] = useState();
   // const baseURL = "http://127.0.0.1:8000/";
-  const baseURL = "https://booking-flask-punyapatkha.vercel.app/";
+  // const baseURL = "https://booking-flask-punyapatkha.vercel.app/";
+  const baseURL = process.env.NEXT_PUBLIC_API_URL;
   const [loadingcalendar, setloadingcalendar] = useState(false);
 
   
