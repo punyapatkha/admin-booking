@@ -41,8 +41,8 @@ export default function Post () {
 
   const [selectedservice,setselectedservice] = useState(false);
   const [selectedphone,setselectedphone] = useState(false);
-  // const baseURL = "https://booking-flask-punyapatkha.vercel.app/";
-  const baseURL = "http://127.0.0.1:8000/";
+  const baseURL = "https://booking-flask-punyapatkha.vercel.app/";
+  // const baseURL = "http://127.0.0.1:8000/";
 
   useEffect(() => {
     console.log("this is Pid ",pid)
