@@ -64,6 +64,10 @@ function Navbar() {
       setAnchorElUser(null);
     };
 
+    const handleSignoutButton = () => {
+      signOut();
+      router.push('/api/auth/signin', { replace: true });
+    };
   // Check if we're on the client side before rendering the button
   // typeof window !== 'undefined' ไม่มีผล?
   if (typeof window !== 'undefined' & status === "authenticated") {

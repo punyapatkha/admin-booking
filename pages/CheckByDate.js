@@ -165,6 +165,7 @@ export default function CheckByDate() {
     useEffect(() => {
       setloadingAPI(false)
       setloadingtable(false)
+      if( status==="authenticated"){
       axios.post(baseURL+"admin/view",
         {
           "year": selectdate.getFullYear(),
@@ -204,7 +205,8 @@ export default function CheckByDate() {
         });
 
         setloadingtable(true)
-      }, [selectdate]);
+        }
+      }, [selectdate,status]);
 
       useEffect(() => {
         try{

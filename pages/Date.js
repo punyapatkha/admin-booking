@@ -107,6 +107,9 @@ export default function Date () {
         }
       }
       ).then((response) => {
+        if(response.data.detial === "Could not validate credentials"){
+          router.push('/api/auth/signin', { replace: true });
+        }
         if (Object.keys(response.data.data).length > 0){
 
           // ไม่ต้องมีก็ได้ จัดการมาจากฝั่ง python แล้ว
@@ -369,8 +372,13 @@ failed
       { loadingAPI  && loadingtable ? (
         
         <> 
-      
-         
+      <br/>
+      <Box sx={{ width: '100%', maxWidth: 1500,textAlign: 'center' }}>
+      <Typography variant="h5" gutterBottom>
+      Date : {format2digit_month(pid.substring(0, 2))} {format2digit_month(pid.substring(2, 4))} {pid.substring(4, 8)} 
+      </Typography>
+      </Box>
+      <br/>
 
           <TableContainer component={Paper}>
       <Table sx={{ minWidth: 5 }} aria-label="simple table">
