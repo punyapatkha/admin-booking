@@ -17,9 +17,19 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-
+import { useSession, signIn, signOut } from "next-auth/react"
 import { Fragment, useState ,useEffect } from 'react'
 
+
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 
 const inter = Inter({ subsets: ['latin'] })
 var example_ava = {
@@ -38,7 +48,8 @@ var example_ava = {
 };
 
 export default function Home() {
-
+  
+  const { data: session, status } = useSession();
   const [value, setValue] = useState();
   
   const [selectTime, setselectTime] = useState();
@@ -71,12 +82,23 @@ export default function Home() {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   };
 
+  function createData(name, calories, fat, carbs, protein) {
+    return { name, calories, fat, carbs, protein };
+  }
+  const rows = [
+    createData('1', '0893651231', '13:00', 'ตัดผม', 'Cancel'),
+    createData('2', '0893651567', '13:00', 'ตัดผม', 'Done'),
+    createData('3', '0893459999', '13:30', 'ตัดผม', 'Confirm'),
+    createData('4', '0673459898', '14:00', 'ตัดผม', 'Confirm'),
+    createData('5', '0893651222', '15:30', 'ตัดผม', 'Pending'),
+  ];
   return (
     <>
     
     <Navbar/>
-    
-    <div class="text-center my-5">
+    {session 
+      ? <>
+      <div class="text-center my-5">
       Add static home page content here  👇🏼
       <img 
        
@@ -84,7 +106,7 @@ export default function Home() {
        src="https://cdn.camberwellshopping.com.au/wp-content/uploads/2021/07/13111806/The-best-barbers-in-Camberwell.jpg" alt="Girl in a jacket"  />
     </div>
 
-    <div class="text-center"><Link href="/api/auth/signin">Sign in</Link></div>; 
+   
 
     <div class="text-center">
     <Link href="/bookdate"><button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded m-5">booking</button></Link>
@@ -92,6 +114,52 @@ export default function Home() {
     <div class="text-center">
     <Link href="/checking"><button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded m-5">checking</button></Link>
     </div>
+
+    <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 20 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell><Button onClick={() => signOut()} color="inherit">ID</Button></TableCell>
+                  <TableCell align="right"><Button onClick={() => signOut()} color="inherit">Phone Number</Button></TableCell>
+                  <TableCell align="right"><Button onClick={() => signOut()} color="inherit">Time</Button> </TableCell>
+                  <TableCell align="right"><Button onClick={() => signOut()} color="inherit">Service Type</Button></TableCell>
+                  <TableCell align="right"><Button onClick={() => signOut()} color="inherit">Status</Button> </TableCell>
+                  <TableCell align="right"><Button onClick={() => signOut()} color="inherit">Action</Button> </TableCell>
+                </TableRow>
+                {/* <TableRow>
+                  <TableCell>ID</TableCell>
+                  <TableCell align="right">Phone Number</TableCell>
+                  <TableCell align="right">Time </TableCell>
+                  <TableCell align="right">Service Type</TableCell>
+                  <TableCell align="right">Status </TableCell>
+                  <TableCell align="right">Action </TableCell>
+                </TableRow> */}
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <TableRow
+                    key={row.name}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {row.name}
+                    </TableCell>
+                    <TableCell align="right">{row.calories}</TableCell>
+                    <TableCell align="right">{row.fat}</TableCell>
+                    <TableCell align="right">{row.carbs}</TableCell>
+                    <TableCell align="right">{row.protein}</TableCell>
+                    <TableCell align="right"><Button onClick={() => signIn()} variant="contained" color="error"> Edit</Button></TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+    
+      </>
+      : <>
+       <div class="text-center"><Link href="/api/auth/signin"><button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded m-5">Sign in</button></Link></div> 
+      </>}
+    
     </>
   )
 }

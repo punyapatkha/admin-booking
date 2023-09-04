@@ -10,6 +10,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 
 import Header from '@/components/header'
+import Navbar from '@/components/navbar'
 
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
@@ -116,7 +117,7 @@ export default function Post () {
     }
 
   return (<>
-   <Header/>
+    <Navbar/>
    {/* <div onClick={()=>console.log(selectedservice)}>click to log</div>
 
    <div onClick={()=>console.log(selectedphone)}>click to log</div> */}

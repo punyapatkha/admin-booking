@@ -25,6 +25,7 @@ import { Fragment, useState ,useEffect } from 'react'
 import Link from 'next/link'
 import axios from '../axios.config';
 
+import Navbar from '@/components/navbar'
 const inter = Inter({ subsets: ['latin'] })
 
 
@@ -162,7 +163,7 @@ export default function Home() {
    
     
     
-    <Header/>
+   <Navbar/>
     
     {/* <div onClick={()=>console.log(selectdate)}>click to log</div> */}
 

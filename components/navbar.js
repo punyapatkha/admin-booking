@@ -39,7 +39,7 @@ import Avatar from '@mui/material/Avatar';
 import { authenticator } from '@otplib/preset-default';
 
 function Navbar() {
-    const pages = ['check', 'Create','bookdate','checking','checkdate'];
+    const pages = ['Create', 'Check','bookdate','checking','checkdate'];
     const router = useRouter()
     const handleclick = (test) => {
       router.push(test)
@@ -65,6 +65,7 @@ function Navbar() {
     };
 
   // Check if we're on the client side before rendering the button
+  // typeof window !== 'undefined' ไม่มีผล?
   if (typeof window !== 'undefined' & status === "authenticated") {
     return (
         <Box sx={{ flexGrow: 1 }}>

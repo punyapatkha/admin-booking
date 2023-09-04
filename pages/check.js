@@ -90,8 +90,7 @@ export default function Check() {
 
   return (
     <>
-   <Navbar/>
-   <Header/>
+    <Navbar/>
    <div>
   {/* The current time in New York is {formattedTime}. */}
 </div>
