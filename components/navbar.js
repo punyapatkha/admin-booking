@@ -168,7 +168,7 @@ function Navbar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip>
             {session 
-      ? <Button onClick={() => signOut()} color="inherit">Sign out</Button>
+      ? <Button onClick={() => handleSignoutButton()} color="inherit">Sign out</Button>
       : <Button onClick={() => signIn()} color="inherit">Sign in</Button>}
             </Tooltip>
             
