@@ -39,7 +39,7 @@ import Avatar from '@mui/material/Avatar';
 import { authenticator } from '@otplib/preset-default';
 
 function Navbar() {
-    const pages = ['Create', 'Check','bookdate','checking','checkdate'];
+    const pages = ['Create', 'Checks','bookdate','checking','checkdate'];
     const router = useRouter()
     const handleclick = (test) => {
       router.push(test)
