@@ -325,8 +325,85 @@ export default function Home() {
         </>
   )
   }
+{ debug ? ( <>
+<div class="text-center pb-10 mt-2">
+<button class="w-2/4 sm:w-1/4 text text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm   px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+onClick={()=>console.log(selectdate)}
+>Check select date</button>
+          {/* <button onClick={()=>console.log(format2digit_month(selectdate.getDate()),format2digit_month(selectdate.getMonth()+1),selectdate.getFullYear())} class="w-2/4 sm:w-1/4 text text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm   px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Check</button> */}
+          <button onClick={()=>axios.post(
+            baseURL+"admin/view",
+            // "http://127.0.0.1:8000/admin/view",
+        {
+          "year": selectdate.getFullYear(),
+          "month": format2digit_month(selectdate.getMonth()),
+          "day": format2digit_month(selectdate.getDay())
+        },
+        {
+          headers: {
+            Authorization: 'Bearer '+session.user.access_token
+          }
+        }
+        )} class="w-2/4 sm:w-1/4 text text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm   px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Send api</button>
+          <button onClick={()=>console.log(Object.keys(tablelist).length > 0)} class="w-2/4 sm:w-1/4 text text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm   px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">dictnotnull</button>
+          <button onClick={()=>console.log(tablelist)}>tablelist</button>
+
+          </div>
+          </>):(
+          <></>
+)}
+{/* table part && table data*/}
+      { loadingcalendar && alldayoff && loadingtable ? (
+        
+        <> 
+      
+         
+
+          <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 20 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>ID</TableCell>
+            <TableCell align="right">Phone Number</TableCell>
+            <TableCell align="right">Time </TableCell>
+            <TableCell align="right">Service Type</TableCell>
+            <TableCell align="right">Status </TableCell>
+            <TableCell align="right">Action </TableCell>
+          </TableRow>
+        </TableHead>
+        {(() => {
+      if (tablelist !== undefined) {
+      return <TableBody>
+      {tablelist.map((row) => (
+        <TableRow
+          key={row.id}
+          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+        >
+          <TableCell component="th" scope="row">
+            {row.id}
+          </TableCell>
+          <TableCell align="right">{row.phone}</TableCell>
+          <TableCell align="right">{row.time}</TableCell>
+          <TableCell align="right">{row.service_type}</TableCell>
+          <TableCell align="right">{row.status}</TableCell>
+          <TableCell align="right"><Button onClick={() => signIn()} variant="contained" color="error"> Edit</Button></TableCell>
+        </TableRow>
+      ))}
+    </TableBody>;
+        } else {
+      return <></>;
+       }
+        })()}
+        
+      </Table>
+    </TableContainer>
 
 
+        </>
+        ):(
+        <>No Data Found</>
+        )
+      }
 
 
 

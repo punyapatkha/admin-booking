@@ -20,12 +20,23 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { format } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
 
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+
+
 import { generateTimeslots,format2digit_month } from '../utils/datefunction';
 import axios from '../axios.config';
 
 import Link from 'next/link'
 import { Fragment, useState ,useEffect } from 'react'
 
+import { useSession, signIn, signOut } from "next-auth/react"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -44,24 +55,54 @@ export default function Date () {
   const [selectedphone,setselectedphone] = useState(false);
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
   
-  
+  const [loadingtable, setloadingtable] = useState(false);
+  const [loadingAPI, setloadingAPI] = useState(false);
+  const [tablelist, settablelist] = useState();
+
+  const { data: session, status } = useSession();
 
   useEffect(() => {
-    console.log("this is Pid ",pid)
-   
-    axios.post(baseURL+"checktime",
-    // axios.post( "http://127.0.0.1:8000/"+"checktime",
-    {
-      "day": format2digit_month(pid.substring(0, 2)),
-      "month": format2digit_month(pid.substring(2, 4)),
-      "year" :pid.substring(4, 8)
-    }
-    ).then((response) => {
-      setDataAPI(response.data);
-      setreadydisplay(true)
-      
-    });
-      
+    setloadingAPI(false)
+    setloadingtable(false)
+    axios.post(baseURL+"admin/view",
+      {
+        "year": pid.substring(4, 8),
+        "month": format2digit_month(pid.substring(2, 4)),
+        "day": format2digit_month(pid.substring(0, 2))
+      },
+      {
+        headers: {
+          Authorization: 'Bearer ' +session.user.access_token
+        }
+      }
+      ).then((response) => {
+        if (Object.keys(response.data.data).length > 0){
+
+          // ไม่ต้องมีก็ได้ จัดการมาจากฝั่ง python แล้ว
+        //   let list_array = [];
+        // response.data.data.map((element, index) => {
+        //     // "MM/DD/YYYY"
+        //     list_array[index] = createData(element.id, element.id, element.id, element.id, element.id) ;
+        //     });
+        
+        settablelist(response.data.data);
+
+        // let dayoff_array = [];
+
+        // response.data.dayoff.day.forEach((element, index) => {
+        //   // "MM/DD/YYYY"
+        //     dayoff_array[index] = new Date(format2digit_month(newYorkTime.getMonth()+1)+"/"+format2digit_month(element)+"/"+newYorkTime.getFullYear()) ;
+        //   });
+        // // let concat_array = [...dayoff,  ...dayoff_array];
+        // // array1.push(...array2);
+        // setdayoff1(dayoff_array);
+        
+        setloadingAPI(true)
+        }
+        
+      });
+
+      setloadingtable(true)
     }, []);
  
     
@@ -216,12 +257,7 @@ export default function Date () {
       ) : (
         <>
   
-        <div class="text-center mt-10"><svg aria-hidden="true" class="inline w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-                  <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
-              </svg>
-              <div class="mt-5">Loading...</div>
-              </div>
+       
               {/* <div>Loading...</div> */}
               </>
        
@@ -242,5 +278,64 @@ success
 >
 failed
 </Link> */}
+      { loadingAPI  && loadingtable ? (
+        
+        <> 
+      
+         
+
+          <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 20 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>ID</TableCell>
+            <TableCell align="right">Phone Number</TableCell>
+            <TableCell align="right">Time </TableCell>
+            <TableCell align="right">Service Type</TableCell>
+            <TableCell align="right">Status </TableCell>
+            <TableCell align="right">Action </TableCell>
+          </TableRow>
+        </TableHead>
+        {(() => {
+      if (tablelist !== undefined) {
+      return <TableBody>
+      {tablelist.map((row) => (
+        <TableRow
+          key={row.id}
+          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+        >
+          <TableCell component="th" scope="row">
+            {row.id}
+          </TableCell>
+          <TableCell align="right">{row.phone}</TableCell>
+          <TableCell align="right">{row.time}</TableCell>
+          <TableCell align="right">{row.service_type}</TableCell>
+          <TableCell align="right">{row.status}</TableCell>
+          <TableCell align="right"><Button onClick={() => signIn()} variant="contained" color="error"> Edit</Button></TableCell>
+        </TableRow>
+      ))}
+    </TableBody>;
+        } else {
+      return <></>;
+       }
+        })()}
+        
+      </Table>
+    </TableContainer>
+
+
+        </>
+        ):(
+        <>
+         <div class="text-center mt-10"><svg aria-hidden="true" class="inline w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                  <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+              </svg>
+              <div class="mt-5">Loading...</div>
+              </div>
+        </>
+        )
+      }
+
   </>)
 }
