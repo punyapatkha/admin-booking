@@ -40,7 +40,7 @@ import Navbar from '@/components/navbar'
 const inter = Inter({ subsets: ['latin'] })
 
 
-export default function Home() {
+export default function CheckByDate() {
 
 
   const handleKeyDown = (event) => {

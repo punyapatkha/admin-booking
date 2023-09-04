@@ -115,7 +115,7 @@ export default function Date () {
         //     });
         
         settablelist(response.data.data);
-
+          
         // let dayoff_array = [];
 
         // response.data.dayoff.day.forEach((element, index) => {
@@ -230,7 +230,8 @@ export default function Date () {
           }
           ).then((response) => {
             console.log(response.data)
-            router.push('/')
+            // router.push('/Date?pid='+pid)
+            router.reload()
             }
           );
       }
