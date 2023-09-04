@@ -9,6 +9,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 
+import CircularProgress from '@mui/material/CircularProgress';
 import Header from '@/components/header'
 import Navbar from '@/components/navbar'
 
@@ -68,6 +69,7 @@ export default function Date () {
   const [modaltime, setmodaltime] = useState();  
   const [modaltype, setmodaltype] = useState();
   const [modalstatus, setmodalstatus] = useState();
+  const [modalloading, setmodalloading] = useState();
 
   const { data: session, status } = useSession();
 
@@ -196,6 +198,7 @@ export default function Date () {
       setmodalphone(phone);
       setmodaltime(time) ;
       setOpen(true)
+      setmodalloading(false)
     }
 
     var cancelbutton = () => {
@@ -204,10 +207,12 @@ export default function Date () {
       setmodaltype();
       setmodalstatus();
       setOpen(false)
+      setmodalloading(false)
     }
     
     var handleconfirmbutton = () => {
-
+      
+      setmodalloading(true)
       var request_body = {}
       if(modaltype){
         request_body['service_type']=modaltype
@@ -230,6 +235,7 @@ export default function Date () {
           }
           ).then((response) => {
             console.log(response.data)
+            setmodalloading(true)
             // router.push('/Date?pid='+pid)
             router.reload()
             }
@@ -466,11 +472,42 @@ failed
     </Stack>
     <br/>
     
-    <Stack spacing={4} direction="row">
+    
+
+    {modalloading?( 
+    <Box
+    sx={{
+      mx: 'auto',
+      width: 200,
+      p: 1,
+      ml: 2,
+      bgcolor: (theme) =>
+        theme.palette.mode === 'dark' ? '#101010' : 'grey.50',
+      color: (theme) =>
+        theme.palette.mode === 'dark' ? 'grey.300' : 'grey.800',
+      border: '1px solid',
+      borderColor: (theme) =>
+        theme.palette.mode === 'dark' ? 'grey.800' : 'grey.300',
+      borderRadius: 2,
+      textAlign: 'center',
+      fontSize: '0.875rem',
+      fontWeight: '700',
+    }}
+  >
+    <CircularProgress />
+
+  </Box>
+
+    
+    
+    ):(
+          
+      <Stack spacing={4} direction="row">
         <Button  variant="contained" color="error" onClick={()=>cancelbutton()}>Cancel</Button>
         <Button  variant="contained" color="success"  onClick={()=>handleconfirmbutton()}>Confirm</Button>
-      
+        
     </Stack>
+              )}
         </Box>
         
       </Modal>
