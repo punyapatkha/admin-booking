@@ -99,7 +99,7 @@ export default function Home() {
     {session 
       ? <>
       <div class="text-center my-5">
-      Add static home page content here  👇🏼
+       home page content 
       <img 
        
       class="rounded-lg mx-auto my-5"
@@ -109,51 +109,11 @@ export default function Home() {
    
 
     <div class="text-center">
-    <Link href="/bookdate"><button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded m-5">booking</button></Link>
+      Footer
     </div>
-    <div class="text-center">
-    <Link href="/checking"><button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded m-5">checking</button></Link>
-    </div>
+  
 
-    <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 20 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell><Button onClick={() => signOut()} color="inherit">ID</Button></TableCell>
-                  <TableCell align="right"><Button onClick={() => signOut()} color="inherit">Phone Number</Button></TableCell>
-                  <TableCell align="right"><Button onClick={() => signOut()} color="inherit">Time</Button> </TableCell>
-                  <TableCell align="right"><Button onClick={() => signOut()} color="inherit">Service Type</Button></TableCell>
-                  <TableCell align="right"><Button onClick={() => signOut()} color="inherit">Status</Button> </TableCell>
-                  <TableCell align="right"><Button onClick={() => signOut()} color="inherit">Action</Button> </TableCell>
-                </TableRow>
-                {/* <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell align="right">Phone Number</TableCell>
-                  <TableCell align="right">Time </TableCell>
-                  <TableCell align="right">Service Type</TableCell>
-                  <TableCell align="right">Status </TableCell>
-                  <TableCell align="right">Action </TableCell>
-                </TableRow> */}
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
-                  <TableRow
-                    key={row.name}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {row.name}
-                    </TableCell>
-                    <TableCell align="right">{row.calories}</TableCell>
-                    <TableCell align="right">{row.fat}</TableCell>
-                    <TableCell align="right">{row.carbs}</TableCell>
-                    <TableCell align="right">{row.protein}</TableCell>
-                    <TableCell align="right"><Button onClick={() => signIn()} variant="contained" color="error"> Edit</Button></TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+
     
       </>
       : <>

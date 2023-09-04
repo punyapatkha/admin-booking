@@ -20,6 +20,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { format } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
 
+import Modal from '@mui/material/Modal';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -28,7 +29,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 
+import Typography from '@mui/material/Typography';
 
 import { generateTimeslots,format2digit_month } from '../utils/datefunction';
 import axios from '../axios.config';
@@ -59,12 +62,38 @@ export default function Date () {
   const [loadingAPI, setloadingAPI] = useState(false);
   const [tablelist, settablelist] = useState();
 
+  
+  const [modalid, setmodalid] = useState();
+  const [modalphone, setmodalphone] = useState();
+  const [modaltime, setmodaltime] = useState();  
+  const [modaltype, setmodaltype] = useState();
+  const [modalstatus, setmodalstatus] = useState();
+
   const { data: session, status } = useSession();
 
+  
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 300,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
+  // https://stackoverflow.com/questions/69412453/next-js-router-query-getting-undefined-on-refreshing-page-but-works-if-you-navi
   useEffect(() => {
     setloadingAPI(false)
     setloadingtable(false)
-    axios.post(baseURL+"admin/view",
+    if(router.isReady && status==="authenticated"){
+      axios.post(baseURL+"admin/view",
       {
         "year": pid.substring(4, 8),
         "month": format2digit_month(pid.substring(2, 4)),
@@ -101,9 +130,11 @@ export default function Date () {
         }
         
       });
+   }
+    
 
       setloadingtable(true)
-    }, []);
+    }, [router.isReady,status]);
  
     
   const handleKeyDown = (event) => {
@@ -145,6 +176,8 @@ export default function Date () {
         
 
       });
+    
+    
 
     } catch (error) {
       console.log(error)
@@ -154,9 +187,57 @@ export default function Date () {
       }, 2000);
     }
      
+    
 
     }
+    
+    var handleeditbutton = (id,phone,time) => {
+      setmodalid(id)
+      setmodalphone(phone);
+      setmodaltime(time) ;
+      setOpen(true)
+    }
 
+    var cancelbutton = () => {
+      setmodalphone();
+      setmodaltime();
+      setmodaltype();
+      setmodalstatus();
+      setOpen(false)
+    }
+    
+    var handleconfirmbutton = () => {
+
+      var request_body = {}
+      if(modaltype){
+        request_body['service_type']=modaltype
+      }
+      if(modalstatus){
+        request_body['status']=modalstatus
+      }
+      if (Object.keys(request_body).length === 0) {
+        // Your code here if request_body is an empty dictionary (empty object)
+      } else {
+        request_body['desired_id']=modalid
+        
+        const baseURL = "http://127.0.0.1:8000/";
+        axios.post(baseURL+"admin/edit",
+        request_body,
+          {
+            headers: {
+              Authorization: 'Bearer ' +session.user.access_token
+            }
+          }
+          ).then((response) => {
+            console.log(response.data)
+            router.push('/')
+            }
+          );
+      }
+      
+      // setOpen(true)
+    }
+  
   return (<>
     <Navbar/>
    {/* <div onClick={()=>console.log(selectedservice)}>click to log</div>
@@ -285,10 +366,10 @@ failed
          
 
           <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 20 }} aria-label="simple table">
+      <Table sx={{ minWidth: 5 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>ID</TableCell>
+            {/* <TableCell>ID</TableCell> */}
             <TableCell align="right">Phone Number</TableCell>
             <TableCell align="right">Time </TableCell>
             <TableCell align="right">Service Type</TableCell>
@@ -304,14 +385,14 @@ failed
           key={row.id}
           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
         >
-          <TableCell component="th" scope="row">
+          {/* <TableCell component="th" scope="row">
             {row.id}
-          </TableCell>
+          </TableCell> */}
           <TableCell align="right">{row.phone}</TableCell>
           <TableCell align="right">{row.time}</TableCell>
           <TableCell align="right">{row.service_type}</TableCell>
           <TableCell align="right">{row.status}</TableCell>
-          <TableCell align="right"><Button onClick={() => signIn()} variant="contained" color="error"> Edit</Button></TableCell>
+          <TableCell align="right"><Button onClick={() =>handleeditbutton(row.id,row.phone,row.time)} variant="contained" color="error"> Edit</Button></TableCell>
         </TableRow>
       ))}
     </TableBody>;
@@ -322,6 +403,77 @@ failed
         
       </Table>
     </TableContainer>
+
+
+    <div>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Edit {modalphone} at {modaltime}
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Please validate information before confirm. 
+          </Typography>
+
+          <br/>
+          
+     
+          
+          
+ 
+         
+          <Stack spacing={3} direction="row">
+          <Typography id="modal-modal-description" sx={{ mt: 10, paddingTop:2 }}>
+            Service:
+          </Typography>
+        
+          <FormControl sx={{ minWidth: 150 }}>
+        <Select
+            onChange= {(e) => setmodaltype(e.target.value)}
+            onKeyDown={handleKeyDown}
+          >
+            <MenuItem value={"ตัดผม"}>ตัดผม</MenuItem>
+              <MenuItem value={"ย้อมสีผม"}>ย้อมสีผม</MenuItem>
+              <MenuItem value={"สระ-ไดร์"}>สระ-ไดร์</MenuItem>
+              <MenuItem value={"ม้วนผม"}>ม้วนผม</MenuItem>
+          </Select>
+          </FormControl>
+    </Stack>
+    <br/>
+
+          <Stack spacing={4} direction="row">
+          <Typography id="modal-modal-description" sx={{ mt: 10, paddingTop:2 }}>
+            Status:
+          </Typography>
+        
+          <FormControl sx={{ minWidth: 150 }}>
+        <Select
+            onChange= {(e) => setmodalstatus(e.target.value)}
+            onKeyDown={handleKeyDown}
+          >
+            <MenuItem value={"cancel"}>Cancel</MenuItem>
+            <MenuItem value={"await payment"}>Await payment</MenuItem>
+            <MenuItem value={"confirm"}>Confirm</MenuItem>
+            <MenuItem value={"served"}>Served</MenuItem>
+          </Select>
+          </FormControl>
+    </Stack>
+    <br/>
+    
+    <Stack spacing={4} direction="row">
+        <Button  variant="contained" color="error" onClick={()=>cancelbutton()}>Cancel</Button>
+        <Button  variant="contained" color="success"  onClick={()=>handleconfirmbutton()}>Confirm</Button>
+      
+    </Stack>
+        </Box>
+        
+      </Modal>
+    </div>
 
 
         </>

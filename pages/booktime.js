@@ -48,7 +48,7 @@ export default function Post () {
 
   useEffect(() => {
     console.log("this is Pid ",pid)
-   
+    if(router.isReady){
     axios.post(baseURL+"checktime",
     // axios.post( "http://127.0.0.1:8000/"+"checktime",
     {
@@ -61,8 +61,8 @@ export default function Post () {
       setreadydisplay(true)
       
     });
-      
-    }, []);
+  }
+    }, [router.isReady]);
  
     
   const handleKeyDown = (event) => {
