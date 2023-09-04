@@ -12,6 +12,16 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -22,6 +32,7 @@ import { utcToZonedTime } from 'date-fns-tz';
 import { generateTimeslots,format2digit_month } from '../utils/datefunction';
 import { Fragment, useState ,useEffect } from 'react'
 
+import { useSession, signIn, signOut } from "next-auth/react"
 import Link from 'next/link'
 import axios from '../axios.config';
 
@@ -76,12 +87,26 @@ export default function Home() {
     // return false
   };
 
+  function createData(name, calories, fat, carbs, protein) {
+    return { name, calories, fat, carbs, protein };
+  }
+  const rows = [
+    createData('1', '0893651231', '13:00', 'ตัดผม', 'Cancel'),
+    createData('2', '0893651567', '13:00', 'ตัดผม', 'Done'),
+    createData('3', '0893459999', '13:30', 'ตัดผม', 'Confirm'),
+    createData('4', '0673459898', '14:00', 'ตัดผม', 'Confirm'),
+    createData('5', '0893651222', '15:30', 'ตัดผม', 'Pending'),
+  ];
 
+  const testfunction = () => {
+    console.log(tablelist)
+  };
   const now = new Date();
   const newYorkTime = utcToZonedTime(now, 'Asia/Bangkok');
   // const formattedTime = format(newYorkTime, 'hh:mm:ss a');
   
-  
+  var debug = false
+  const { data: session, status } = useSession();
   const [selectdate, setselectdate] = useState(new Date(newYorkTime)); // also use in time slot part
   const [Post2, setPost2] = useState();
   const [Post, setPost] = useState();
@@ -93,7 +118,9 @@ export default function Home() {
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
   const [loadingcalendar, setloadingcalendar] = useState(false);
 
-  
+  const [loadingtable, setloadingtable] = useState(false);
+  const [loadingAPI, setloadingAPI] = useState(false);
+  const [tablelist, settablelist] = useState();
 
   // calendar dayoff month 1 and 2 split
   useEffect(() => {
@@ -135,23 +162,74 @@ export default function Home() {
       });
     }, []);
 
-    // calendar dayoff month 1 and 2 combine
     useEffect(() => {
-      // setalldayoff([...dayoff1,...dayoff2])
-      try{
-      setalldayoff(dayoff1.concat(dayoff2))
-      // console.log("pass")
-      setloadingcalendar(true)
-    }
-      
-      catch{
-        // console.log("error")
+      setloadingAPI(false)
+      setloadingtable(false)
+      axios.post(baseURL+"admin/view",
+        {
+          "year": selectdate.getFullYear(),
+          "month": format2digit_month(selectdate.getMonth()+1),
+          "day": format2digit_month(selectdate.getDate())
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' +session.user.access_token
+          }
+        }
+        ).then((response) => {
+          if (Object.keys(response.data.data).length > 0){
+
+            // ไม่ต้องมีก็ได้ จัดการมาจากฝั่ง python แล้ว
+          //   let list_array = [];
+          // response.data.data.map((element, index) => {
+          //     // "MM/DD/YYYY"
+          //     list_array[index] = createData(element.id, element.id, element.id, element.id, element.id) ;
+          //     });
+          
+          settablelist(response.data.data);
+
+          // let dayoff_array = [];
+  
+          // response.data.dayoff.day.forEach((element, index) => {
+          //   // "MM/DD/YYYY"
+          //     dayoff_array[index] = new Date(format2digit_month(newYorkTime.getMonth()+1)+"/"+format2digit_month(element)+"/"+newYorkTime.getFullYear()) ;
+          //   });
+          // // let concat_array = [...dayoff,  ...dayoff_array];
+          // // array1.push(...array2);
+          // setdayoff1(dayoff_array);
+          
+          setloadingAPI(true)
+          }
+          
+        });
+
+        setloadingtable(true)
+      }, [selectdate]);
+
+      useEffect(() => {
+        try{
       }
-      
-      }, [dayoff1,dayoff2]);
-
+        
+        catch{
+          // console.log("error")
+        }
+        
+        }, [tablelist]);
     
-
+  // calendar dayoff month 1 and 2 combine
+  useEffect(() => {
+  // setalldayoff([...dayoff1,...dayoff2])
+  try{
+  setalldayoff(dayoff1.concat(dayoff2))
+  // console.log("pass")
+  setloadingcalendar(true)
+  }
+  
+  catch{
+    // console.log("error")
+  }
+  
+  }, [dayoff1,dayoff2]);
   
 
   
@@ -170,10 +248,10 @@ export default function Home() {
 
     <div class="flex pt-14">
     <div class="w-1/3 ..."></div>
-    <div class="w-1/3 font-bold">1. Select Date</div>
+    <div class="w-1/3 font-bold">Select Date</div>
     <div class="w-1/3 ..."></div>
 </div>
-  { loadingcalendar && alldayoff ? (
+  { loadingcalendar && alldayoff  ? (
   
   <> 
   <LocalizationProvider  dateAdapter={AdapterDayjs}>
@@ -204,19 +282,16 @@ export default function Home() {
       />
     </LocalizationProvider>
     <div class="text-center pb-10 mt-2">
-    {/* <button onClick={()=>console.log(format2digit_month(selectdate.getDate()),format2digit_month(selectdate.getMonth()+1),selectdate.getFullYear())} class="w-2/4 sm:w-1/4 text text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm   px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Check</button> */}
-    </div>
-
-    <div class="text-center pb-10 mt-2">
     <Link
   href={{
-    pathname: '/booktime',
+    pathname: '/Date',
     query: "pid="+format2digit_month(selectdate.getDate())+format2digit_month(selectdate.getMonth()+1)+selectdate.getFullYear()//data // the data
   }}
 >
 <button class="w-2/4 sm:w-1/4 text text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm   px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Check</button>
 </Link>
 </div>
+
 {/* <> */}
     {/* <Link
   href={{
@@ -250,6 +325,87 @@ export default function Home() {
         </>
   )
   }
+{ debug ? ( <>
+<div class="text-center pb-10 mt-2">
+<button class="w-2/4 sm:w-1/4 text text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm   px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+onClick={()=>console.log(selectdate)}
+>Check select date</button>
+          {/* <button onClick={()=>console.log(format2digit_month(selectdate.getDate()),format2digit_month(selectdate.getMonth()+1),selectdate.getFullYear())} class="w-2/4 sm:w-1/4 text text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm   px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Check</button> */}
+          <button onClick={()=>axios.post(
+            baseURL+"admin/view",
+            // "http://127.0.0.1:8000/admin/view",
+        {
+          "year": selectdate.getFullYear(),
+          "month": format2digit_month(selectdate.getMonth()),
+          "day": format2digit_month(selectdate.getDay())
+        },
+        {
+          headers: {
+            Authorization: 'Bearer '+session.user.access_token
+          }
+        }
+        )} class="w-2/4 sm:w-1/4 text text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm   px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Send api</button>
+          <button onClick={()=>console.log(Object.keys(tablelist).length > 0)} class="w-2/4 sm:w-1/4 text text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm   px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">dictnotnull</button>
+          <button onClick={()=>console.log(tablelist)}>tablelist</button>
+
+          </div>
+          </>):(
+          <></>
+)}
+{/* table part && table data*/}
+      { loadingcalendar && alldayoff && loadingtable ? (
+        
+        <> 
+      
+         
+
+          <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 20 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>ID</TableCell>
+            <TableCell align="right">Phone Number</TableCell>
+            <TableCell align="right">Time </TableCell>
+            <TableCell align="right">Service Type</TableCell>
+            <TableCell align="right">Status </TableCell>
+            <TableCell align="right">Action </TableCell>
+          </TableRow>
+        </TableHead>
+        {(() => {
+      if (tablelist !== undefined) {
+      return <TableBody>
+      {tablelist.map((row) => (
+        <TableRow
+          key={row.id}
+          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+        >
+          <TableCell component="th" scope="row">
+            {row.id}
+          </TableCell>
+          <TableCell align="right">{row.phone}</TableCell>
+          <TableCell align="right">{row.time}</TableCell>
+          <TableCell align="right">{row.service_type}</TableCell>
+          <TableCell align="right">{row.status}</TableCell>
+          <TableCell align="right"><Button onClick={() => signIn()} variant="contained" color="error"> Edit</Button></TableCell>
+        </TableRow>
+      ))}
+    </TableBody>;
+        } else {
+      return <></>;
+       }
+        })()}
+        
+      </Table>
+    </TableContainer>
+
+
+        </>
+        ):(
+        <>No Data Found</>
+        )
+      }
+
+
 
     </>
   )

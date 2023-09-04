@@ -41,8 +41,8 @@ export const authOptions = {
         // const res = await fetch("http://127.0.0.1:8000/token", {
           // process.env.API_URL
         const res = await fetch(
-          process.env.NEXT_PUBLIC_API_URL+"token2"
-          // "http://localhost:8000/token2"
+          process.env.NEXT_PUBLIC_API_URL+"token"
+          // "http://localhost:8000/token"
           , {
           method: 'POST',
           // body: datatata,
