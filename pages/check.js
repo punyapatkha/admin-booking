@@ -28,7 +28,7 @@ import { Fragment, useState ,useEffect } from 'react'
 const inter = Inter({ subsets: ['latin'] })
 
 
-export default function Check() {
+export default function Home() {
     // useEffect(() => {
     //     setValuephone()
     //     setselectTime()
