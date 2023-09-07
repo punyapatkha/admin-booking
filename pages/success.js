@@ -10,6 +10,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 
 import Header from '@/components/header'
+import Navbar from '@/components/navbar'
 
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
@@ -47,7 +48,8 @@ export default function Post () {
 
   }, []);
   return (<>
-  <Header/>
+  {/* <Header/> */}
+  <Navbar/>
   {/* <p>✔️✔️❌✅success: 
     {pid} 
   </p> */}
@@ -61,6 +63,7 @@ export default function Post () {
               <div class="mt-5">✔️ your booking is success ✔️</div>
               <div class="mt-5">🏃 we are bringing you back to first page 🏃</div>
               <div class="mt-5">🔍 you can checking your booking status there 🔍</div>
+              {/* <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/QR_Code_Example.svg" alt="Italian Trulli"></img> */}
               </div>
 
 
