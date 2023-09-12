@@ -24,9 +24,12 @@ describe("booking", () => {
     cy.xpath('//*[@id="__next"]/div[6]/button').click();
     // cy.get("div:nth-of-type(16) > button").click();
     // cy.wait(3000)
-    cy.get("div.text-center > button").click();
-    cy.get("[data-testid='MenuIcon']").click();
-    cy.get("li:nth-of-type(3) > p").click();
+    cy.wait(5000)
+    cy.get("div.css-1lvtzne path").click();
+    cy.get("li:nth-of-type(3)").click();    
+    // cy.get("div.text-center > button").click();
+    // cy.get("[data-testid='MenuIcon']").click();
+    // cy.get("li:nth-of-type(3) > p").click();
     cy.get("div:nth-of-type(5) > button:nth-of-type(5)").click();
     cy.get("div.text-center button").click();
     cy.get("tr:nth-of-type(24) button").click();
