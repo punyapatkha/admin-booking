@@ -36,15 +36,17 @@ export default function Post () {
   const router = useRouter()
   // const { pid } = router.query
   useEffect(() => {
+    // for cypress
+    setready(true);
     // setloadingstate(true);
-    setTimeout(() => {
-      setready(true);
+    // setTimeout(() => {
+    //   setready(true);
+    // // }, 2000);
     // }, 2000);
-    }, 2000);
     setTimeout(() => {
       router.push('/', { replace: true });
     // }, 2000);
-    }, 4000);
+    }, 500);
 
   }, []);
   return (<>
