@@ -23,7 +23,7 @@ describe("booking", () => {
     cy.get("div.py-10 input").type("1112");
     cy.xpath('//*[@id="__next"]/div[6]/button').click();
     // cy.get("div:nth-of-type(16) > button").click();
-    cy.wait(1000)
+    // cy.wait(3000)
     cy.get("div.text-center > button").click();
     cy.get("[data-testid='MenuIcon']").click();
     cy.get("li:nth-of-type(3) > p").click();

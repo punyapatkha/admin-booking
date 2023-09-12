@@ -43,10 +43,10 @@ export default function Post () {
     //   setready(true);
     // // }, 2000);
     // }, 2000);
-    setTimeout(() => {
-      router.push('/', { replace: true });
-    // }, 2000);
-    }, 500);
+    // setTimeout(() => {
+    //   router.push('/', { replace: true });
+    // // }, 2000);
+    // }, 500);
 
   }, []);
   return (<>

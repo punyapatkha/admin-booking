@@ -100,7 +100,8 @@ export default function Post () {
           } else {
             router.push('/failed', { replace: true });
           }
-        }, 2000);
+        // }, 2000);
+      }, 100);
         
 
       });
