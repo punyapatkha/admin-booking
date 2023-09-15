@@ -41,7 +41,8 @@ export const authOptions = {
         // const res = await fetch("http://127.0.0.1:8000/token", {
           // process.env.API_URL
         const res = await fetch(
-          process.env.NEXT_PUBLIC_API_URL+"token"
+          // process.env.NEXT_PUBLIC_API_URL+"token"
+          "https://fastapi-booking.vercel.app/token"
           // "http://localhost:8000/token"
           , {
           method: 'POST',

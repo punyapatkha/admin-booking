@@ -28,10 +28,88 @@ import axios from '../axios.config';
 import Navbar from '@/components/navbar'
 const inter = Inter({ subsets: ['latin'] })
 
+import Button from '@mui/material/Button';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import {red,green,lime,blue,grey,deepOrange,amber} from '@mui/material/colors';
+import { styled } from "@mui/material/styles";
 
 export default function Home() {
+  const CustomMonth = ({ month }) => {
+    return (
+      <span
+        sx={{
+          color: '#FF0000',
+        }}
+      >
+        {month}test
+      </span>
+    );
+  };
+  const theme = createTheme({
+    typography: {
+      button: {
+        fontSize: '5rem',
+      },
+    },
+  });
 
-
+  const t3theme = createTheme({
+    typography: {
+      // In Chinese and Japanese the characters are usually larger,
+      // so a smaller fontsize may be appropriate.
+      fontSize: 12,
+      // fontSize: 25,
+      color:  blue[300],
+    },
+    palette: {
+      mode: 'dark',
+      
+      // mode: 'light',
+      primary: amber,
+          
+      primary: {
+        
+        // main: red[500], 
+        // dark: will be calculated from palette.secondary.main,
+        // contrastText: '#E0C2FF',
+      
+      light: blue[300],
+      main: blue[500],
+      dark: lime[700],
+      darker: blue[900],
+        
+      },
+      text: {
+        primary: blue[900],
+        secondary: green[800],
+        disabled: red[800],
+      },
+      background: {
+        // default: deepOrange[900],
+        // paper: deepOrange[900],
+      },
+      
+    }
+  });
+  
+  const t2theme = createTheme({
+    typography: {
+      // In Chinese and Japanese the characters are usually larger,
+      // so a smaller fontsize may be appropriate.
+      fontSize: 12,
+      // fontSize: 25,
+      color:  blue[300],
+      
+    },
+    overrides: {
+      MuiPickersCalendarHeader: {
+        header: {
+          backgroundColor: red[900],
+        },
+      },
+    },
+  });
+  
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -152,8 +230,12 @@ export default function Home() {
 
     
 
-  
-
+  // from https://github.com/mui/mui-x/issues/6653
+  // fix month calendar colour
+      const CustomizedStaticDatePicker = styled(StaticDatePicker)(
+        ({  }) => `
+      `
+      );
   
 
   
@@ -176,8 +258,48 @@ export default function Home() {
   { loadingcalendar && alldayoff ? (
   
   <> 
+
+<ThemeProvider theme={theme}>
+  <Button>font-size: 1rem</Button>
+</ThemeProvider>
+<LocalizationProvider  dateAdapter={AdapterDayjs}>
+  
+<ThemeProvider theme={t3theme}>
+<CustomizedStaticDatePicker 
+// https://mui.com/system/typography/
+     sx={{
+      // bgcolor: blue[900],
+      color:blue[400],
+      fontWeight: 900
+      // boxShadow: 1,
+      // borderRadius: 20,
+      // p: 2,
+      // minWidth: 300,
+    //   "& .MuiPickersCalendarHeader-root": {
+    //     bgcolor: blue[900],
+    // },
+    }}   /></ThemeProvider>
+    </LocalizationProvider>
+
   <LocalizationProvider  dateAdapter={AdapterDayjs}>
-      <StaticDatePicker 
+  <ThemeProvider theme={t3theme}>
+      <CustomizedStaticDatePicker 
+// https://mui.com/system/typography/
+       sx={{
+        // bgcolor: blue[900],
+        color:red[900],
+        // boxShadow: 1,
+        // borderRadius: 20,
+        // p: 2,
+        // minWidth: 300,
+
+        // https://mui.com/system/getting-started/the-sx-prop/
+        "& .MuiPickersCalendarHeader-root": {
+          bgcolor: blue[900],
+          typography: 'body5'
+          
+      },
+      }} 
        inputFormat="MM-dd"
        views={[ "day"]}
 
@@ -200,8 +322,9 @@ export default function Home() {
           setselectdate(new Date(newValue));
           console.log(new Date(newValue));
         }}
-        renderInput={(params) => <TextField {...params} />}
+        renderInput={(params) => <TextField   {...params} />}
       />
+      </ThemeProvider>
     </LocalizationProvider>
     <div class="text-center pb-10 mt-2">
     {/* <button onClick={()=>console.log(format2digit_month(selectdate.getDate()),format2digit_month(selectdate.getMonth()+1),selectdate.getFullYear())} class="w-2/4 sm:w-1/4 text text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm   px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Check</button> */}

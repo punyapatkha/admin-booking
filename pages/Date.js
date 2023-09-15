@@ -471,10 +471,10 @@ failed
             onChange= {(e) => setmodalstatus(e.target.value)}
             onKeyDown={handleKeyDown}
           >
-            <MenuItem value={"cancel"}>Cancel</MenuItem>
-            <MenuItem value={"await payment"}>Await payment</MenuItem>
-            <MenuItem value={"confirm"}>Confirm</MenuItem>
-            <MenuItem value={"served"}>Served</MenuItem>
+            <MenuItem value={"Cancel"}>Cancel</MenuItem>
+            <MenuItem value={"Await payment"}>Await payment</MenuItem>
+            <MenuItem value={"Confirm"}>Confirm</MenuItem>
+            <MenuItem value={"Served"}>Served</MenuItem>
           </Select>
           </FormControl>
     </Stack>
