@@ -92,43 +92,7 @@ export default function Post () {
 
   return (<>
 <div class="h-screen w-screen">
-    <Navbar></Navbar>
- {/* front = more z 
-     back = more negative z*/}
- {/* <div className="absolute z-30 text-white"> test</div> */}
- 
- {/* for blur */}
- <div className='absolute z-10 text-white h-1/4' id="inside"></div>
-<div ref={sliderRef} className="keen-slider h-1/4">
-      <div className="keen-slider__slide number-slide-first"></div>
-      <div className="keen-slider__slide number-slide2">2</div>
-      <div className="keen-slider__slide number-slide3">3</div>
-      <div className="keen-slider__slide number-slide3">4</div>
-      <div className="keen-slider__slide number-last"></div>
+    <div id="inside">test</div>
     </div>
-</div>
-{loaded && instanceRef.current && (
-          <>
-            <Arrow
-              left
-              onClick={(e) =>
-                e.stopPropagation() || instanceRef.current?.prev()
-              }
-              disabled={currentSlide === 0}
-            />
-
-            <Arrow
-              onClick={(e) =>
-                e.stopPropagation() || instanceRef.current?.next()
-              }
-              disabled={
-                currentSlide ===
-                instanceRef.current.track.details.slides.length - 1
-              }
-            />
-          </>
-        )}
- 
-  
   </>)
 }
