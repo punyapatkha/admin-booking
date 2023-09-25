@@ -45,11 +45,14 @@ export const authOptions = {
               "avatar": "https://www.melivecode.com/users/1.png"
             }
           }
+          
           return data.user
         }
+        else{
+          // Return null if user data could not be retrieved
+          return null
+        }
         
-        // Return null if user data could not be retrieved
-        return null
       }
     }),
 

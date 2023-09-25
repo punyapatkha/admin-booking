@@ -89,7 +89,16 @@ export default function Post () {
       setLoaded(true)
     },
   })
-
+    const [sliderRef3] = useKeenSlider({
+    mode: "free-snap",
+    slides: {
+      origin: "center",
+      perView: 2,
+      // perView: "auto",
+      spacing: 15,
+      
+    },
+  })
   return (<>
 <div class="h-screen w-screen">
     <Navbar></Navbar>
@@ -98,13 +107,18 @@ export default function Post () {
  {/* <div className="absolute z-30 text-white"> test</div> */}
  
  {/* for blur */}
- <div className='absolute z-10 text-white h-1/4' id="inside"></div>
-<div ref={sliderRef} className="keen-slider h-1/4">
-      <div className="keen-slider__slide number-slide-first"></div>
-      <div className="keen-slider__slide number-slide2">2</div>
+ <div className='absolute z-10 text-white h-1/3' id="inside"></div>
+<div ref={sliderRef3} className="keen-slider h-1/3" >
+      <div className="keen-slider__slide number-slide2" style={{ maxWidth: 250, minWidth: 150 }}>
+    
+<div class="flex flex-col bg-white h-full w-full " >
+  <div className="bg-[#FF0000]">01</div>
+  <div  className="bg-[#0000FF]">02</div>
+  <div>03</div></div></div>
+      
+      <div className="keen-slider__slide number-slide2" style={{ maxWidth: 150, minWidth: 150 }}>3</div>
       <div className="keen-slider__slide number-slide3">3</div>
       <div className="keen-slider__slide number-slide3">4</div>
-      <div className="keen-slider__slide number-last"></div>
     </div>
 </div>
 {loaded && instanceRef.current && (
@@ -129,6 +143,13 @@ export default function Post () {
           </>
         )}
  
-  
+ <div ref={sliderRef3} className="keen-slider">
+      <div className="keen-slider__slide number-slide1">1</div>
+      <div className="keen-slider__slide number-slide2">2</div>
+      {/* <div className="keen-slider__slide number-slide3">3</div>
+      <div className="keen-slider__slide number-slide4">4</div>
+      <div className="keen-slider__slide number-slide5">5</div>
+      <div className="keen-slider__slide number-slide6">6</div> */}
+    </div>
   </>)
 }
