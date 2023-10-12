@@ -38,13 +38,76 @@ import axios from '../axios.config';
 import { useRouter } from 'next/router'
 import { Fragment, useState ,useEffect } from 'react'
 
+import { Chart } from "chart.js/auto";
+
+import {Bar,Line} from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Filler,
+  Legend,
+} from 'chart.js';
+
+import { faker } from '@faker-js/faker';
 
 const inter = Inter({ subsets: ['latin'] })
 
 
 const drawerWidth = 240;
+
 export default function Checking() {
-    const router = useRouter();
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Filler,
+    Legend
+  );
+  const options = {
+    // responsive: true,
+    // plugins: {
+    //   legend: {
+    //     position: 'top',
+    //   },
+    //   title: {
+    //     display: true,
+    //     text: 'Chart.js Line Chart',
+    //   },
+    // },
+  };
+  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  const data2 = {
+    labels,
+    datasets: [
+      {
+        fill: true,
+        label: 'Dataset 2',
+        data: labels.map(() => faker.number.int({ min: 0, max: 1000 })),
+        // borderColor: 'rgb(53, 162, 235)',
+        // backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        pointStyle: 'circle',
+        pointRadius: 8,
+        // pointRadius: [5, 10, 7, 12, 8]
+      },{
+        fill: true,
+        label: 'Dataset 3',
+        data: labels.map(() => faker.number.int({ min: 0, max: 1000 })),
+        // borderColor: 'rgb(53, 162, 235)',
+        // backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        pointRadius: 8,
+      },
+    ],
+  };
+
+  const router = useRouter();
     const data = router.query;
 
     // console.log(data, " useLocation Hook");
@@ -67,12 +130,45 @@ export default function Checking() {
       };
     
 
-
+      const data3 = {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'hello'],
+        datasets: [{
+          label: '# of Votes',
+          // data: [12, 19, 3, 5, 2, 3],
+          data: labels.map(() => faker.number.int({ min: 0, max: 1000 })),
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 1
+        }]
+      }
 
 
   return (
     <>
-   
+   {/* https://medium.com/@farrel.abyansyah/how-to-use-apexcharts-in-a-next-js-project-96e413bc9b31
+   https://apexcharts.com/react-chart-demos/ 
+
+   used
+
+  // https://react-chartjs-2.js.org/examples/area-chart/
+  // https://react-chartjs-2.js.org/examples/line-chart/
+
+  reference : https://minimals.cc/dashboard
+   */}
    <Header/>
    {/* <h1> {data ? data : "Go to Home"} </h1>   */}
    
@@ -104,8 +200,8 @@ export default function Checking() {
         {/* <Toolbar /> */}
 
         <Toolbar>
-          <Typography variant="h8" noWrap component="div">
-            [logo]-[name]-[version]
+          <Typography variant="h6" noWrap component="div">
+          ✂️ QueCut 0.7
           </Typography>
         </Toolbar>
         <Divider />
@@ -143,30 +239,30 @@ export default function Checking() {
         {/* <Toolbar /> */}
         <div>
  
-    <div class="bg-blue-200 grid grid-cols-4 gap-4 px-4 pt-4 pb-3">
-  <div class="bg-blue- text-black font-sans font-semibold rounded-lg ">Dashboard</div>
-  <div class="bg-blue- text-black font-sans  rounded-lg"> Dashboard </div>
+    <div class="bg-blue- grid grid-cols-4 gap-4 px-4 pt-4 pb-3">
+  <div class="bg-blue- text-white font-sans font-semibold rounded-lg ">Dashboard</div>
+  <div class="bg-blue- text-white font-sans  rounded-lg"> Dashboard </div>
   <div class="bg-blue- rounded-lg"></div>
   <div class="bg-blue- rounded-lg"></div>
 </div>
 {/* create crontab update data evern hours */}
-<div class="bg-blue-200 grid grid-cols-4 gap-4 px-4 pt-2 ">
-  <div class="bg-blue-300 rounded-lg cursor-progress">
+<div class="bg-blue- grid grid-cols-4 gap-4 px-4 pt-2 ">
+  <div class="bg-gray-100 rounded-lg cursor-progress">
     <div class="pt-3 px-4">Total Web Visit</div>
     <div class="px-4 text-lg font-sans font-bold">2,236</div>
     <div class="px-4 pt-3 pb-2 text-sm">You made an [number] today</div></div>
-  <div class="bg-blue-500 rounded-lg">
+  <div class="bg-gray-100 rounded-lg">
   
     <div class="pt-3 px-4">Total Booking</div>
     <div class="px-4 text-lg font-sans font-bold">236</div>
     <div class="px-4 pt-3 pb-2 text-sm">You made an extra 35,000 this year</div>
   </div>
-  <div class="bg-blue-900 rounded-lg">
+  <div class="bg-gray-100 rounded-lg">
     <div class="pt-3 px-4">Total Served</div>
     <div class="px-4 text-lg font-sans font-bold">224</div>
     <div class="px-4 pt-3 pb-2 text-sm">You made an extra 35,000 this year</div>
   </div>
-  <div class="bg-blue-900 rounded-lg">
+  <div class="bg-gray-100 rounded-lg">
     <div class="pt-3 px-4">Total Cancel</div>
     <div class="px-4 text-lg font-sans font-bold">12</div>
     <div class="px-4 pt-3 pb-2 text-sm">You made an extra 35,000 this year</div>
@@ -175,41 +271,33 @@ export default function Checking() {
 
 
 
-<div class="bg-blue-200 grid grid-cols-3 gap-4 px-4 pt-14 pb-2">
-  <div class="col-span-2 text-black font-sans font-semibold ">Unique Visitor</div>
-  <div class="text-black font-sans font-semibold">Income Overview</div>
+<div class="bg-blue- grid grid-cols-3 gap-4 px-4 pt-14 pb-2">
+  <div class="col-span-2 text-white font-sans font-semibold ">Unique Visitor</div>
+  <div class="text-white font-sans font-semibold">Income Overview</div>
 </div>
-<div class="bg-blue-200 grid grid-cols-3 gap-4 p-4">
-  <div class="bg-blue-300 rounded-lg h-80 col-span-2">01</div>
-  <div class="bg-blue-500 rounded-lg">01</div>
+<div class="bg-blue- grid grid-cols-3 h-1/2  gap-4 p-4">
+  <div class="bg-gray-100 rounded-lg col-span-2">
+    <Line options={options} data={data2} class="bg-gray-100 p-10 rounded-lg" />
+  </div>
+  <div class="bg-gray-100 rounded-lg ">
+    <Bar    class="px-4  p-10"
+              data={data3}
+              // width={400}
+              // height={200}
+              options={{
+                maintainAspectRatio: false
+              }}
+            />
+  </div>
 </div>
 </div>
 <div>
    
-    <div class="bg-blue-200 grid grid-cols-4 gap-4 px-4 pt-4">
-  <div class="bg-blue- text-black rounded-lg ">Dashboard</div>
-  <div class="bg-blue- rounded-lg"></div>
-  <div class="bg-blue- rounded-lg"></div>
-  <div class="bg-blue- rounded-lg"></div>
-</div>
-{/* create crontab update data evern hours */}
-<div class="bg-blue-200 grid grid-cols-4 gap-4 px-4 pt-2 ">
-  <div class="bg-blue-300 rounded-lg h-40 pl-2 pt-2 ">Total Visit Booking Web</div>
-  <div class="bg-blue-500 rounded-lg"><div>2</div><div>1</div>Total Book +..today</div>
-  <div class="bg-blue-900 rounded-lg">Total Served +..today</div>
-  <div class="bg-blue-900 rounded-lg">Total Cancel green less than 10%</div>
-</div>
 
 
 
-<div class="bg-blue-200 grid grid-cols-3 gap-4 px-4 pt-4 pb-2">
-  <div class="col-span-2 text-black">Unique Visitor</div>
-  <div class="text-black">Income Overview</div>
-</div>
-<div class="bg-blue-200 grid grid-cols-3 gap-4 p-4">
-  <div class="bg-blue-300 rounded-lg h-80 col-span-2">01</div>
-  <div class="bg-blue-500 rounded-lg">01</div>
-</div>
+
+
 </div>
         <Typography paragraph>
           Line chart to displays status count for each day.

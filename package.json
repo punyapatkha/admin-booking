@@ -24,6 +24,7 @@
     "dayjs": "^1.11.9",
     "eslint": "8.34.0",
     "eslint-config-next": "13.2.1",
+    "faker": "^6.6.6",
     "jsonwebtoken": "^9.0.2",
     "keen-slider": "^6.8.6",
     "next": "13.2.1",
@@ -40,6 +41,7 @@
     "speakeasy": "^2.0.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.1.0",
     "autoprefixer": "^10.4.13",
     "cypress": "^13.1.0",
     "cypress-xpath": "^2.0.1",
