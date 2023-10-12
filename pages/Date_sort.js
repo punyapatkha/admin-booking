@@ -483,12 +483,14 @@ failed
     </TableContainer>
 
 
-    <div>
+    <div >
       <Modal
+        className='text-white'
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
@@ -536,7 +538,7 @@ failed
           >
             <MenuItem value={"Cancel"}>Cancel</MenuItem>
             <MenuItem value={"Await payment"}>Await payment</MenuItem>
-            <MenuItem value={"Confirm"}>Confirm</MenuItem>
+            <MenuItem className='text-white' value={"Confirm"}>Confirm</MenuItem>
             <MenuItem value={"Served"}>Served</MenuItem>
           </Select>
           </FormControl>
