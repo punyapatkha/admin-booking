@@ -247,61 +247,7 @@ export default function Date () {
       
       // setOpen(true)
     }
-  const [sortOrder, setSortOrder] = useState('asc'); 
-  var sort=(property)=>{
-
-    // https://chat.openai.com/c/a54a7401-cdcf-4b4a-b987-24d4a70c05c5
-    // thanks to chatGPT 
-
-    // const entries2 = tablelist
-    // entries2.sort(function(a, b) {
-    //   return a.phone.localeCompare(b.phone);
-    // });
-    // if(property==='time'){
-    
-    // var entries2 = [...tablelist].sort((a, b) => a.time.localeCompare(b.time));
-    // // var entries2 = [...tablelist].sort((a, b) => b.time.localeCompare(a.time));
-    // settablelist([...entries2])
-    // }
-    // else if(property==='service_type'){
-    
-    // var entries2 = [...tablelist].sort((a, b) =>a.service_type.localeCompare(b.service_type));
-    // settablelist([...entries2])
-    //   }
-    // else if(property==='status'){
-
-    //   var entries2 = [...tablelist].sort((a, b) =>a.status.localeCompare(b.status));
-    //   settablelist([...entries2])
-    // }
-    // else if(property==='phone'){
-
-    //   var entries2 = [...tablelist].sort((a, b) =>a.phone.localeCompare(b.phone));
-      
-    //   settablelist([...entries2])
-    //     }
-    // else{
-    let sorted;
-    if (sortOrder === 'asc') {
-      var entries2 = [...tablelist].sort((a, b) => a[property].localeCompare(b[property]));
-    setSortOrder('desc');
-    } else {
-      var entries2 = [...tablelist].sort((a, b) => b[property].localeCompare(a[property]));
-      setSortOrder('asc');
-    }
-    // settablelist([...entries2])
-    // }
-    // var entries2 = [...tablelist].sort((a, b) => a.time - b.time);
-    entries2.map((test)=>console.log(test[property]))
-    // console.log(entries2,"tets2")
-    settablelist(entries2)
-    // settablelist([...entries2])
-  }
-
-  // const sortList = (property) => {
-  //   const sorted = [...sortedList].sort((a, b) => a[property] - b[property]);
-  //   settablelist(sorted);
-  // };
-
+  
   return (<>
     <Navbar/>
    {/* <div onClick={()=>console.log(selectedservice)}>click to log</div>
@@ -432,15 +378,6 @@ failed
       Date : {format2digit_month(pid.substring(0, 2))} {format2digit_month(pid.substring(2, 4))} {pid.substring(4, 8)} 
       </Typography>
       </Box>
-      <Button onClick={()=>sort('phone')}>phone</Button>
-      
-      <Button onClick={()=>sort('service_type')}>service_type</Button>
-      
-      <Button onClick={()=>sort('status')}>status</Button>
-      
-      <Button onClick={()=>sort('time')}>time</Button>
-      
-      <Button onClick={()=>console.log(tablelist)}>log</Button>
       <br/>
 
           <TableContainer component={Paper}>
@@ -448,11 +385,11 @@ failed
         <TableHead>
           <TableRow>
             {/* <TableCell>ID</TableCell> */}
-            <TableCell align="right">Phone No.</TableCell>
-            <TableCell align="right">Detail</TableCell>
-            {/* <TableCell align="right">Service Type</TableCell> */}
-            <TableCell align="right">Status</TableCell>
-            <TableCell align="right"></TableCell>
+            <TableCell align="right">Phone Number</TableCell>
+            <TableCell align="right">Time </TableCell>
+            <TableCell align="right">Service Type</TableCell>
+            <TableCell align="right">Status </TableCell>
+            <TableCell align="right">Action </TableCell>
           </TableRow>
         </TableHead>
         {(() => {
@@ -468,7 +405,7 @@ failed
           </TableCell> */}
           <TableCell align="right">{row.phone}</TableCell>
           <TableCell align="right">{row.time} {row.service_type}</TableCell>
-          {/* <TableCell align="right">{row.service_type}</TableCell> */}
+          <TableCell align="right">{row.service_type}</TableCell>
           <TableCell align="right">{row.status}</TableCell>
           <TableCell align="right"><Button onClick={() =>handleeditbutton(row.id,row.phone,row.time)} variant="contained" color="error"> Edit</Button></TableCell>
         </TableRow>
@@ -483,14 +420,12 @@ failed
     </TableContainer>
 
 
-    <div >
+    <div>
       <Modal
-        className='text-white'
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
@@ -538,7 +473,7 @@ failed
           >
             <MenuItem value={"Cancel"}>Cancel</MenuItem>
             <MenuItem value={"Await payment"}>Await payment</MenuItem>
-            <MenuItem className='text-white' value={"Confirm"}>Confirm</MenuItem>
+            <MenuItem value={"Confirm"}>Confirm</MenuItem>
             <MenuItem value={"Served"}>Served</MenuItem>
           </Select>
           </FormControl>
