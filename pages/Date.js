@@ -432,6 +432,9 @@ failed
       Date : {format2digit_month(pid.substring(0, 2))} {format2digit_month(pid.substring(2, 4))} {pid.substring(4, 8)} 
       </Typography>
       </Box>
+
+      {/* {/* for debug  */}
+      {/* <>
       <Button onClick={()=>sort('phone')}>phone</Button>
       
       <Button onClick={()=>sort('service_type')}>service_type</Button>
@@ -441,6 +444,7 @@ failed
       <Button onClick={()=>sort('time')}>time</Button>
       
       <Button onClick={()=>console.log(tablelist)}>log</Button>
+      </> */}
       <br/>
 
           <TableContainer component={Paper}>
@@ -448,10 +452,10 @@ failed
         <TableHead>
           <TableRow>
             {/* <TableCell>ID</TableCell> */}
-            <TableCell align="right">Phone No.</TableCell>
-            <TableCell align="right">Detail</TableCell>
+            <TableCell align="right" onClick={()=>sort('phone')} >Phone No.</TableCell>
+            <TableCell align="right" onClick={()=>sort('time')} >Detail</TableCell>
             {/* <TableCell align="right">Service Type</TableCell> */}
-            <TableCell align="right">Status</TableCell>
+            <TableCell align="right" onClick={()=>sort('status')}>Status</TableCell>
             <TableCell align="right"></TableCell>
           </TableRow>
         </TableHead>
