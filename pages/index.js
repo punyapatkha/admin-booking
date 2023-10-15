@@ -12,6 +12,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 
+import CalendarMonthTwoToneIcon from '@mui/icons-material/CalendarMonthTwoTone';
+
+import EventTwoToneIcon from '@mui/icons-material/EventTwoTone';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -51,7 +54,8 @@ export default function Home() {
   
   const { data: session, status } = useSession();
   const [value, setValue] = useState();
-  
+  const currentDate = new Date(); 
+  const timestamp = currentDate. getTime();
   const [selectTime, setselectTime] = useState();
   // const {id}  = useParams();
   function start (day){
@@ -98,19 +102,44 @@ export default function Home() {
     <Navbar/>
     {session 
       ? <>
-      <div class="text-center my-5">
-       home page content 
-      <img 
-       
-      class="rounded-lg mx-auto my-5"
-       src="https://cdn.camberwellshopping.com.au/wp-content/uploads/2021/07/13111806/The-best-barbers-in-Camberwell.jpg" alt="Girl in a jacket"  />
+      <div class="grid grid-cols-1  bg-gray- pt-5 text-white">
+        <Link class="justify-self-center" href={"/Date?pid="+currentDate.getDate()+(Number(currentDate.getMonth())+1)+currentDate.getFullYear()}>
+          <div class="bg-red- p-2 w-40 h-40 justify-self-center">
+            <div class="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-800 hover:to-gray-800 
+            h-36 rounded-xl justify-self-center border border-slate-600 hover:border-gray-700 shadow-2xl" >
+              <div class="justify-self-center h-11 text-center">
+              </div>
+          {/* https://mui.com/material-ui/material-icons/ */}
+          
+              <div class="justify-self-center text-center ">
+                <EventTwoToneIcon sx={{ fontSize: 27 }}/>
+              </div>
+              <div class="justify-self-center text-center text-lg">Today 
+                <br></br>
+                {/* {currentDate.getDate()}{" "}{currentDate.getMonth()+1}{" "}{currentDate.getFullYear()} */}
+              </div>
+              
+            </div>
+          </div>
+        </Link>  
+        <Link class="justify-self-center" href="/CheckByDate">
+        
+        <div class="bg-red- p-2 w-40 h-40 justify-self-center ">
+        <div class="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-800 hover:to-gray-800 
+        h-36 rounded-xl justify-self-center border border-slate-600 hover:border-gray-700 shadow-2xl" >
+         <div class="justify-self-center h-11 text-center">
+         </div>
+      {/* https://mui.com/material-ui/material-icons/ */}
+      
+          <div class="justify-self-center text-center ">
+          <CalendarMonthTwoToneIcon sx={{ fontSize: 27  }}/>
+      </div>
+      <div class="justify-self-center text-center text-lg">Date</div>
+      
     </div>
-
-   
-
-    <div class="text-center">
-      Footer
-    </div>
+        </div>
+        </Link> 
+      </div>
   
 
 
